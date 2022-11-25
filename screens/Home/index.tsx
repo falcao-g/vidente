@@ -1,8 +1,10 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import Loading from "../../components/Loading"
 import Resume from "../../components/Resume"
 import Weather from "../../models/Weather"
 import { RootStackParamList } from "../../navigation"
+import { findWeathers } from "../../services/WeatherService"
 import {
 	Container,
 	NextWeathersArea,
@@ -13,93 +15,61 @@ import {
 type Props = NativeStackScreenProps<RootStackParamList, "Home">
 
 const Home = ({ navigation }: Props) => {
-	const [weathers, setWeathers] = useState<Weather[]>([
-		{
-			description: "Frio",
-			iconNumber: 31,
-			temperature: 18,
-			time: "11:00",
-		},
-		{
-			description: "Calorzinho",
-			iconNumber: 7,
-			temperature: 25,
-			time: "12:00",
-		},
-		{
-			description: "Quente",
-			iconNumber: 6,
-			temperature: 35,
-			time: "13:00",
-		},
-		{
-			description: "Muito quente",
-			iconNumber: 2,
-			temperature: 36,
-			time: "14:00",
-		},
-		{
-			description: "Insuportável",
-			iconNumber: 3,
-			temperature: 38,
-			time: "15:00",
-		},
-		{
-			description: "Queimando",
-			iconNumber: 4,
-			temperature: 38.5,
-			time: "16:00",
-		},
-		{
-			description: "Inferno",
-			iconNumber: 5,
-			temperature: 41,
-			time: "17:00",
-		},
-		{
-			description: "?",
-			iconNumber: 10,
-			temperature: 0,
-			time: "18:00",
-		},
-		{
-			description: "Corra",
-			iconNumber: 8,
-			temperature: 30,
-			time: "19:00",
-		},
-		{
-			description: "Você foi avisado",
-			iconNumber: 12,
-			temperature: 29,
-			time: "20:00",
-		},
-		{
-			description: "Boa noite.",
-			iconNumber: 11,
-			temperature: 28,
-			time: "21:00",
-		},
-	])
+	const [weathers, setWeathers] = useState<Weather[]>([])
+	const [minTemperature, setMinTemperature] = useState(0)
+	const [maxTemperature, setMaxTemperature] = useState(0)
+	const [weathersLoaded, setWeathersLoaded] = useState(false)
+
+	const findLastWeathers = async () => {
+		setWeathersLoaded(false)
+		const lastWeathers = await findWeathers()
+		let max = Number.NEGATIVE_INFINITY
+		let min = Number.POSITIVE_INFINITY
+
+		lastWeathers.forEach((w) => {
+			if (w.temperature > max) {
+				max = w.temperature
+			}
+
+			if (w.temperature < min) {
+				min = w.temperature
+			}
+		})
+
+		setMaxTemperature(max)
+		setMinTemperature(min)
+		setWeathers(lastWeathers)
+		setWeathersLoaded(true)
+	}
+
+	useEffect(() => {
+		findLastWeathers()
+	}, [])
 
 	return (
 		<Container>
-			<Resume
-				cityName="Aquidauana-MS"
-				currentTemperature={28}
-				description="Ensolarado"
-				iconNumber={2}
-				maxTemperature={33}
-				minTemperature={25}
-			/>
+			{weathersLoaded && (
+				<>
+					<Resume
+						cityName="Aquidauana-MS"
+						currentTemperature={weathers[0].temperature}
+						description={weathers[0].description}
+						iconNumber={weathers[0].iconNumber}
+						maxTemperature={maxTemperature}
+						minTemperature={minTemperature}
+					/>
 
-			<NextWeathersButton
-				onPress={() => navigation.push("NextWeathers", { weathers })}
-			>
-				<NextWeathersArea>
-					<NextWeathersText>Próximos climas</NextWeathersText>
-				</NextWeathersArea>
-			</NextWeathersButton>
+					<NextWeathersButton
+						onPress={() => navigation.push("NextWeathers", { weathers })}
+					>
+						<NextWeathersArea>
+							<NextWeathersText>Próximos climas</NextWeathersText>
+						</NextWeathersArea>
+					</NextWeathersButton>
+				</>
+			)}
+
+			{!weathersLoaded && <Loading />}
 		</Container>
 	)
 }

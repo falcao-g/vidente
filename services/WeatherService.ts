@@ -1,10 +1,6 @@
 import axios from "axios"
 import Weather, { getWeather } from "../models/Weather"
-
-const API_KEY = "FxmEIh1jvcTvnIPeaaPBmvnAuLwLyL7y"
-const API_URL = "http://dataservice.accuweather.com"
-const WEATHER_ENDPOINT = "forecasts/v1/hourly/12hour"
-const CITY_CODE = 38802
+import { API_KEY, API_URL, CITY_CODE, WEATHER_ENDPOINT } from "../config/api"
 
 const http = axios.create({ baseURL: API_URL })
 
@@ -22,7 +18,7 @@ export const findWeathers = async () => {
 	if (response.status == 200) {
 		const { data } = response
 
-		data.forEach((d: any) => getWeather(d))
+		data.forEach((d: any) => weathers.push(getWeather(d)))
 	}
 
 	return weathers

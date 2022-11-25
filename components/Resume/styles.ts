@@ -42,6 +42,6 @@ export const WeatherDescription = styled.Text`
 
 export const OtherTemperatures = styled.Text`
 	font-family: "Montserrat_400Regular";
-	font-size: 14px;
+	font-size: 13px;
 	text-align: center;
 `
