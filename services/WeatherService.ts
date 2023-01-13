@@ -1,11 +1,11 @@
 import axios from "axios"
 import Weather, { getWeather } from "../models/Weather"
-import { API_KEY, API_URL, CITY_CODE, WEATHER_ENDPOINT } from "../config/api"
+import { API_KEY, API_URL, WEATHER_ENDPOINT } from "../config/api"
 
 const http = axios.create({ baseURL: API_URL })
 
-export const findWeathers = async () => {
-	const response = await http.get(`${WEATHER_ENDPOINT}/${CITY_CODE}`, {
+export const findWeathers = async (cityCode: number) => {
+	const response = await http.get(`${WEATHER_ENDPOINT}/${cityCode}`, {
 		params: {
 			apikey: API_KEY,
 			language: "pt-BR",

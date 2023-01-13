@@ -11,6 +11,8 @@ import { RootStackParamList } from "./navigation"
 import Config from "./screens/config"
 import Home from "./screens/Home"
 import NextWeathers from "./screens/NextWeathers"
+import ConfigButton from "./components/ConfigButton"
+import { UserContextProvider } from "./context/UserContext"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
@@ -26,33 +28,44 @@ const App = () => {
 	}
 
 	return (
-		<NavigationContainer>
-			<Stack.Navigator
-				screenOptions={{
-					contentStyle: {
-						backgroundColor: "#fff",
-					},
-				}}
-			>
-				<Stack.Screen
-					name="Home"
-					component={Home}
-					options={{ title: "Vidente" }}
-				/>
+		<UserContextProvider>
+			<NavigationContainer>
+				<Stack.Navigator
+					screenOptions={{
+						contentStyle: {
+							backgroundColor: "#fff",
+						},
+					}}
+				>
+					<Stack.Screen
+						name="Home"
+						component={Home}
+						options={({ navigation }) => ({
+							title: "vidente",
+							headerRight: () => (
+								<ConfigButton
+									onPress={() => {
+										navigation.navigate("Config")
+									}}
+								/>
+							),
+						})}
+					/>
 
-				<Stack.Screen
-					name="NextWeathers"
-					component={NextWeathers}
-					options={{ title: "Próximos climas" }}
-				/>
+					<Stack.Screen
+						name="NextWeathers"
+						component={NextWeathers}
+						options={{ title: "Próximos climas" }}
+					/>
 
-				<Stack.Screen
-					name="Config"
-					component={Config}
-					options={{ title: "Configurações" }}
-				/>
-			</Stack.Navigator>
-		</NavigationContainer>
+					<Stack.Screen
+						name="Config"
+						component={Config}
+						options={{ title: "Configurações" }}
+					/>
+				</Stack.Navigator>
+			</NavigationContainer>
+		</UserContextProvider>
 	)
 }
 
