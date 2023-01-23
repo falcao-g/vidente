@@ -38,6 +38,7 @@ export const CurrentTemperature = styled.Text`
 export const WeatherDescription = styled.Text`
 	font-family: "Montserrat_700Bold";
 	font-size: 16px;
+	margin-horizontal: 8px
 	text-align: center;
 	color: #edede9;
 `

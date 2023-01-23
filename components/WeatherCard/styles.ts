@@ -18,6 +18,7 @@ export const WeatherIcon = styled.Image`
 export const WeatherDescription = styled.Text`
 	font-family: "Montserrat_400Regular";
 	font-size: 12px;
+	margin-right: 80px;
 	color: #edede9;
 `
 

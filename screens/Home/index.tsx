@@ -69,6 +69,7 @@ const Home = ({ navigation }: Props) => {
 
 		if (weather.raining) {
 			index = 6
+			setBlur(2)
 		} else if (weather.temperature > 35) {
 			index = 4
 		} else if (weather.temperature > 25) {
