@@ -1,7 +1,7 @@
 import styled from "styled-components/native"
 
 export const Card = styled.View`
-	background-color: #00b5cc;
+	background-color: #5e548e;
 	padding: 10px;
 	margin: 5px 0;
 	flex-direction: row;
@@ -18,12 +18,12 @@ export const WeatherIcon = styled.Image`
 export const WeatherDescription = styled.Text`
 	font-family: "Montserrat_400Regular";
 	font-size: 12px;
-	color: #fff;
+	color: #edede9;
 `
 
 export const WeatherTemperature = styled.Text`
 	font-family: "Montserrat_700Bold";
 	font-size: 15px;
 	margin-left: auto;
-	color: #fff;
+	color: #edede9;
 `

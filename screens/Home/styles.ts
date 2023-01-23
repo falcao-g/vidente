@@ -9,7 +9,7 @@ export const NextWeathersButton = styled.TouchableOpacity`
 `
 
 export const NextWeathersArea = styled.View`
-	background-color: #00b5cc;
+	background-color: #5e548e;
 	border-radius: 10px;
 	padding: 10px 20px;
 	margin: auto;
@@ -18,7 +18,7 @@ export const NextWeathersArea = styled.View`
 
 export const NextWeathersText = styled.Text`
 	font-family: "Montserrat_700Bold";
-	color: #fff;
+	color: #edede9;
 	text-align: center;
 	font-size: 17px;
 `

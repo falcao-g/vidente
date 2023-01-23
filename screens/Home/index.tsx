@@ -5,6 +5,7 @@ import Resume from "../../components/Resume"
 import Weather from "../../models/Weather"
 import { RootStackParamList } from "../../navigation"
 import { findWeathers } from "../../services/WeatherService"
+import { ImageBackground } from "react-native"
 import {
 	Container,
 	NextWeathersArea,
@@ -20,8 +21,24 @@ const Home = ({ navigation }: Props) => {
 	const [minTemperature, setMinTemperature] = useState(0)
 	const [maxTemperature, setMaxTemperature] = useState(0)
 	const [weathersLoaded, setWeathersLoaded] = useState(false)
+	const [imageIndex, setImageIndex] = useState(0)
+	const [blur, setBlur] = useState(3)
 
 	const { cityCode, cityName } = useContext(UserContext)
+	const images = [
+		require("../../assets/backgrounds/chilly/day.jpg"),
+		require("../../assets/backgrounds/chilly/night.jpg"),
+		require("../../assets/backgrounds/cold/day.jpg"),
+		require("../../assets/backgrounds/cold/night.jpg"),
+		require("../../assets/backgrounds/desert/day.jpg"),
+		require("../../assets/backgrounds/desert/night.jpg"),
+		require("../../assets/backgrounds/raining/day.jpg"),
+		require("../../assets/backgrounds/raining/night.jpg"),
+		require("../../assets/backgrounds/tropical/day.jpg"),
+		require("../../assets/backgrounds/tropical/night.jpg"),
+		require("../../assets/backgrounds/mediterranean/day.jpg"),
+		require("../../assets/backgrounds/mediterranean/night.jpg"),
+	]
 
 	const findLastWeathers = async () => {
 		setWeathersLoaded(false)
@@ -43,6 +60,33 @@ const Home = ({ navigation }: Props) => {
 		setMinTemperature(min)
 		setWeathers(lastWeathers)
 		setWeathersLoaded(true)
+		getBackground(lastWeathers[0])
+	}
+
+	const getBackground = async (weather) => {
+		var index = 0
+		setBlur(3)
+
+		if (weather.raining) {
+			index = 6
+		} else if (weather.temperature > 35) {
+			index = 4
+		} else if (weather.temperature > 25) {
+			index = 8
+		} else if (weather.temperature > 18) {
+			index = 10
+		} else if (weather.temperature > 12) {
+			index = 0
+		} else {
+			index = 2
+		}
+
+		if (!weather.day) {
+			setBlur(2)
+			index++
+		}
+
+		setImageIndex(index)
 	}
 
 	useEffect(() => {
@@ -50,30 +94,43 @@ const Home = ({ navigation }: Props) => {
 	}, [cityCode])
 
 	return (
-		<Container>
-			{weathersLoaded && (
-				<>
-					<Resume
-						cityName={cityName}
-						currentTemperature={weathers[0].temperature}
-						description={weathers[0].description}
-						iconNumber={weathers[0].iconNumber}
-						maxTemperature={maxTemperature}
-						minTemperature={minTemperature}
-					/>
+		<ImageBackground
+			resizeMode={"cover"}
+			style={{ flex: 1 }}
+			source={images[imageIndex]}
+			blurRadius={blur}
+		>
+			<Container>
+				{weathersLoaded && (
+					<>
+						<Resume
+							cityName={cityName}
+							currentTemperature={weathers[0].temperature}
+							description={weathers[0].description}
+							iconNumber={weathers[0].iconNumber}
+							maxTemperature={maxTemperature}
+							minTemperature={minTemperature}
+						/>
 
-					<NextWeathersButton
-						onPress={() => navigation.push("NextWeathers", { weathers })}
-					>
-						<NextWeathersArea>
-							<NextWeathersText>Próximos climas</NextWeathersText>
-						</NextWeathersArea>
-					</NextWeathersButton>
-				</>
-			)}
+						<NextWeathersButton
+							onPress={() =>
+								navigation.push("NextWeathers", {
+									weathers,
+									image: images[imageIndex],
+									blur,
+								})
+							}
+						>
+							<NextWeathersArea>
+								<NextWeathersText>Próximos climas</NextWeathersText>
+							</NextWeathersArea>
+						</NextWeathersButton>
+					</>
+				)}
 
-			{!weathersLoaded && <Loading />}
-		</Container>
+				{!weathersLoaded && <Loading />}
+			</Container>
+		</ImageBackground>
 	)
 }
 

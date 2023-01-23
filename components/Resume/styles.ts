@@ -9,11 +9,12 @@ export const CityName = styled.Text`
 	text-align: center;
 	margin: 10px 0;
 	font-size: 30px;
+	color: #edede9;
 `
 
 export const WeatherInfoArea = styled.View`
 	padding: 10px;
-	border: 5px dashed #00b5cc;
+	border: 5px dashed #5e548e;
 	width: 300px;
 	height: 300px;
 	margin: 10px auto;
@@ -31,17 +32,19 @@ export const CurrentTemperature = styled.Text`
 	font-family: "Montserrat_700Bold";
 	font-size: 50px;
 	text-align: center;
-	color: #00b5cc;
+	color: #5e548e;
 `
 
 export const WeatherDescription = styled.Text`
 	font-family: "Montserrat_700Bold";
 	font-size: 16px;
 	text-align: center;
+	color: #edede9;
 `
 
 export const OtherTemperatures = styled.Text`
 	font-family: "Montserrat_400Regular";
 	font-size: 13px;
 	text-align: center;
+	color: #edede9;
 `
