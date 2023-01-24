@@ -38,3 +38,6 @@ Próximos climas & Configurações:
 <p align="center">
 <img src="https://user-images.githubusercontent.com/60127788/214075131-489e3087-cd82-4c86-849c-f37ce1a0e7ef.jpeg" alt="Página de configuração" width="250">
 </p>
+
+## Créditos
+* Inspiração e fonte das imagens: https://github.com/sawyerpollard/MineWeather
